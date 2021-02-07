@@ -3,6 +3,15 @@ const app = express();
 const port = 3000;
 const db = require('./app/models');
 const dbconfig = require('./app/config/db.config');
+const bodyParser = require("body-parser");
+
+
+// parse requests of content-type - application/json
+app.use(bodyParser.json({limit:'50mb'}));
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true, limit:'50mb' }));
+
 app.get("/", (req, res) => {
     res.send("Hello API");
 });
