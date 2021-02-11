@@ -32,3 +32,29 @@ exports.addNewCustomer = (req,res)=>{
         })
 
 }
+
+exports.removeCustomer =(req,res)=>{
+    Customer.findByIdAndDelete(req.params.cid,(err,result)=>{
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.send({
+            status: 200,
+            data: result
+        }); 
+    })
+}
+
+exports.updateCustomer = (req,res)=>{
+    Customer.findByIdAndUpdate(req.body._id,req.body,(err,result)=>{
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.send({
+            status: 200,
+            data: result
+        });
+    })
+}
