@@ -4,11 +4,12 @@ const port = 3000;
 const db = require('./app/models');
 const dbconfig = require('./app/config/db.config');
 const bodyParser = require("body-parser");
+const cors = require('cors');
 
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json({limit:'50mb'}));
-
+app.use(cors());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true, limit:'50mb' }));
 
