@@ -27,34 +27,34 @@ exports.addNewCustomer = (req,res)=>{
             }
             res.send({
                 status: 200,
-                data: result
+                message: "Customer added Successfully"
             }); 
         })
 
 }
 
 exports.removeCustomer =(req,res)=>{
-    Customer.findByIdAndDelete(req.params.cid,(err,result)=>{
+    Customer.deleteOne({_id:req.params.cid},(err,result)=>{
         if (err) {
             res.status(500).send({ message: err });
             return;
         }
         res.send({
             status: 200,
-            data: result
+            message: "Customer Deleted Successfully"
         }); 
     })
 }
 
 exports.updateCustomer = (req,res)=>{
-    Customer.findByIdAndUpdate(req.body._id,req.body,(err,result)=>{
+    Customer.updateOne({_id:req.body._id},req.body,(err,result)=>{
         if (err) {
             res.status(500).send({ message: err });
             return;
         }
         res.send({
             status: 200,
-            data: result
+            message: "Customer Updated Successfully"
         });
     })
 }

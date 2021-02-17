@@ -2,28 +2,62 @@ var sno = 0;
 var details = [];
 var isEdit = false;
 var selRow;
+var baseUrl = "http://localhost:3000/api/customers/";
 function onSubmit() {
     isEdit ? onUpdate() : onSave();
 }
 
 window.onload = function () {
-    // getAllData();
-    // postData();
-    // deleteById();
-    updateData();
+    getAllData();
 }
 
 function getAllData() {
     fetch('http://localhost:3000/api/customers/getAllCustomers')
         .then(response => response.json())
-        .then(data => console.log(data)).
+        .then(data => {
+            details = data.data;
+            console.log(details);
+            loopArray();
+        }).
         catch((error) => {
             console.error('Error:', error);
         });
 }
 
+function loopArray(){
+    details.filter(e=>{
+        e.age = findAge(e.dob);
+        e.dob = e.dob.slice(0,10).split("-").reverse().join("/")
+    })
+    let table = document.getElementById("dTable");
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+    for (let i = 0; i < details.length; i++) {
+        let obj = details[i];
+        let tRow = `<tr>
+            <td>${i + 1}</td>
+            <td>${obj.name}</td>
+            <td>${obj.phone}</td>
+            <td>${obj.dob}</td>
+            <td>${obj.age}</td>
+            <td>${obj.city}</td>
+            <td>${obj.gender}</td>
+            <td>${obj.bike}</td>
+            <td>${obj.car}</td>
+            <td>${obj.laptop}</td>
+            <td>${obj.mobile}</td>
+            <td>
+                <button class="btn btn-info" onclick="onEdit(${sno})">Edit</button>
+                <button class="btn btn-danger" onclick="onDelete(${sno})">Delete</button>
+            </td>
+    </tr>`;
+        table.insertAdjacentHTML("beforeend", tRow);
+    }
+}
+
 function deleteById(){
-    fetch('http://localhost:3000/api/customers/removeCustomer/602b9a8bf40ce10e4c84567c',{
+    fetch('http://localhost:3000/api/customers/removeCustomer/602ce7575ad8c61d649f9342',{
         method:'DELETE',
 
     }).then(response => response.json())
@@ -32,11 +66,9 @@ function deleteById(){
             console.error('Error:', error);
         });
 }
-
-
 function updateData() {
     let customer = {
-        dob: new Date("1994-11-17"),
+        dob: new Date("2003-11-17"),
         _id:"601ff64696611b22dc15c011"
     }
     fetch('http://localhost:3000/api/customers/updateCustomer', {
@@ -53,7 +85,6 @@ function updateData() {
             console.error('Error:', error);
         });
 }
-
 function postData() {
     let customer = {
         name:"Gowtami",
