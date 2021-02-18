@@ -9,6 +9,19 @@ exports.getAllCustomers = (req, res) => {
         }
         res.send({
             status: 200,
+            data: customers.reverse()
+        });
+    })
+}
+
+exports.sortCustomers = (req,res)=>{
+    Customer.find().sort("city").exec((err, customers) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.send({
+            status: 200,
             data: customers
         });
     })
