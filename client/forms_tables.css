@@ -41,3 +41,7 @@ input[type="radio"],input[type="checkbox"]{
     margin-right: 15px;
     font-weight: 400;
 }
+
+#sbtns button{
+    margin: 10px;
+}

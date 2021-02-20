@@ -14,8 +14,9 @@ exports.getAllCustomers = (req, res) => {
     })
 }
 
-exports.sortCustomers = (req,res)=>{
-    Customer.find().sort("city").exec((err, customers) => {
+exports.getCustomersbySort = (req,res)=>{
+    let sq = req.params.o=="desc"?("-"+req.params.p):req.params.p;
+    Customer.find().sort(sq).exec((err, customers) => {
         if (err) {
             res.status(500).send({ message: err });
             return;

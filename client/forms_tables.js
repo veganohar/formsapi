@@ -3,6 +3,9 @@ var details = [];
 var isEdit = false;
 var selId;
 var baseUrl = "http://localhost:3000/api/customers/";
+var sort_btns = ["Name", "Phone", "DOB", "City", "Gender"];
+var s_order = "asc";
+var prev_s_order;
 function onSubmit() {
     let name = document.getElementById("name").value;
     let phone = document.getElementById("phone").value;
@@ -30,6 +33,14 @@ function onSubmit() {
 
 window.onload = function () {
     getAllData();
+    createSortBtns()
+}
+
+function createSortBtns() {
+    for (let e of sort_btns) {
+        let btn = `<button class="btn btn-secondary" id="sb${e}" onclick="onSort('${e}')">${e}</button>`;
+        document.getElementById("sbtns").insertAdjacentHTML("beforeend",btn);
+    }
 }
 
 function getAllData() {
@@ -37,6 +48,9 @@ function getAllData() {
         .then(response => response.json())
         .then(data => {
             details = data.data;
+            let pab = prev_s_order?document.getElementById("sb"+prev_s_order):null;
+            pab!=null?(pab.classList.remove("btn-dark"),pab.classList.add("btn-secondary")):'';
+            prev_s_order = null;
             loopArray();
         }).
         catch((error) => {
@@ -49,9 +63,9 @@ function deleteById(id) {
         method: 'DELETE',
 
     }).then(response => response.json())
-        .then(data =>{
+        .then(data => {
             getAllData();
-        } ).
+        }).
         catch((error) => {
             console.error('Error:', error);
         });
@@ -169,4 +183,28 @@ function onClr() {
     document.getElementById("sbtn").innerHTML = "Submit";
     document.getElementById("sbtn").className = "btn btn-primary m-2";
     document.getElementById("form").reset();
+}
+
+function onSort(p){
+    changeActiveBtn(p);
+    fetch(`${baseUrl}getCustomersbySort/${p.toLowerCase()}/${s_order}`)
+        .then(response => response.json())
+        .then(data => {
+            details = data.data;
+            s_order = s_order=="asc"?"desc":"asc";
+            loopArray();
+        }).
+        catch((error) => {
+            console.error('Error:', error);
+        });
+}
+
+
+function changeActiveBtn(p){
+    let pab = prev_s_order?document.getElementById("sb"+prev_s_order):null;
+    pab!=null?(pab.classList.remove("btn-dark"),pab.classList.add("btn-secondary")):'';
+    prev_s_order = p;
+    let cab = document.getElementById("sb"+p);
+    cab.classList.remove("btn-secondary");
+    cab.classList.add("btn-dark");
 }

@@ -13,5 +13,5 @@ module.exports = function (app) {
     app.post('/api/customers/addNewCustomer',controller.addNewCustomer);
     app.delete('/api/customers/removeCustomer/:cid',controller.removeCustomer);
     app.put('/api/customers/updateCustomer',controller.updateCustomer);
-    app.get('/api/customers/sort',controller.sortCustomers);
+    app.get('/api/customers/getCustomersbySort/:p/:o',controller.getCustomersbySort);
 }
